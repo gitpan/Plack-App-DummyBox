@@ -15,6 +15,7 @@ my $builder = Module::Build->new(
     },
     requires => {
         'perl' => '5.8.1',
+        'Carp' => 0,
         'Plack::Component' => 0,
         'Imager' => 0,
         'Image::Empty' => 0,

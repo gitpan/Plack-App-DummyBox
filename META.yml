@@ -18,8 +18,9 @@ name: Plack-App-DummyBox
 provides:
   Plack::App::DummyBox:
     file: lib/Plack/App/DummyBox.pm
-    version: 0.01
+    version: 0.02
 requires:
+  Carp: 0
   HTTP::Date: 0
   HTTP::Status: 0
   Image::Empty: 0
@@ -32,4 +33,4 @@ requires:
 resources:
   license: http://dev.perl.org/licenses/
   repository: http://github.com/bayashi/Plack-App-DummyBox
-version: 0.01
+version: 0.02

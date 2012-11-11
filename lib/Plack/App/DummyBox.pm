@@ -1,6 +1,7 @@
 package Plack::App::DummyBox;
 use strict;
 use warnings;
+use Carp qw/croak/;
 use parent qw/Plack::Component/;
 use Imager;
 use Image::Empty;
@@ -11,11 +12,14 @@ use Plack::Util qw//;
 use Plack::Util::Accessor qw/
     dot_gif
     dot_png
+    font
+    text
     max_width
     max_height
+    stderr
 /;
 
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 
 sub prepare_app {
     my $self = shift;
@@ -25,6 +29,16 @@ sub prepare_app {
 
     $self->dot_gif(Image::Empty->gif);
     $self->dot_png(Image::Empty->png);
+
+    if ($self->font) {
+        my $font = Imager::Font->new(
+            file => $self->font->{file},
+            type => $self->font->{type},
+            size => $self->font->{size}   || 15,
+            color => $self->font->{color} || 'darkgray',
+        ) or croak(Imager->errstr);
+        $self->font($font);
+    }
 
     return $self;
 }
@@ -76,6 +90,27 @@ sub call {
             filled => 1,
             color => $fill,
         );
+
+        if ($self->font) {
+            $img->string(
+                font => $self->font,
+                x => 5,
+                y => $self->font->{size}+5,
+                string => "$w x $h",
+                aa => 1,
+            ) or return $self->return_status(500, Imager->errstr);
+
+            if ($self->text) {
+                $img->string(
+                    font => $self->font,
+                    x => 5,
+                    y => $self->font->{size}*2+5+5,
+                    string => $self->text,
+                    aa => 1,
+                ) or return $self->return_status(500, Imager->errstr);
+            }
+        }
+
         my $content = '';
         $img->write(data => \$content , type => $ext);
         my $disposition = $ext_obj->disposition. '; filename="'
@@ -96,6 +131,11 @@ sub call {
 sub return_status {
     my $self        = shift;
     my $status_code = shift || 500;
+    my $err         = shift || '';
+
+    if ($self->stderr) {
+        print STDERR "$err\n";
+    }
 
     my $msg = HTTP::Status::status_message($status_code);
 
@@ -174,9 +214,35 @@ size of border line(pixel): default 1
     my $dummy_box_app = Plack::App::DummyBox->new(
         max_width  => 640,
         max_height => 480,
+        font => +{
+            file  => "/path/to/font_file.ttf",
+            type  => "ft2",
+            size  => 15,    # option
+            color => 'red', # option
+        },
+        text   => "foo",
+        stderr => 1,
     )->to_app;
 
+=over 4
+
+=item max_width, max_height
+
 if the size was over, response HTTP STATUS: 400.
+
+=item font
+
+If you want to see image size as text on the image, you should set C<font> option. see L<Imager::Font>
+
+=item text
+
+add a text in the image. C<text> option also requires C<font> option. Note that text string should be decoded utf8 text when it included not ascii strings.
+
+=item stderr
+
+print error message to STDERR when some error was happen.
+
+=back
 
 
 =head1 METHODS
