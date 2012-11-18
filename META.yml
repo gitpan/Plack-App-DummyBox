@@ -3,6 +3,7 @@ abstract: 'generate dummy box image for web development'
 author:
   - 'Dai Okabayashi <bayashi@cpan.org>'
 build_requires:
+  HTTP::Headers: 0
   HTTP::Request::Common: 0
   MIME::Base64: 0
   Plack::Test: 0
@@ -18,7 +19,7 @@ name: Plack-App-DummyBox
 provides:
   Plack::App::DummyBox:
     file: lib/Plack/App/DummyBox.pm
-    version: 0.02
+    version: 0.03
 requires:
   Carp: 0
   HTTP::Date: 0
@@ -33,4 +34,4 @@ requires:
 resources:
   license: http://dev.perl.org/licenses/
   repository: http://github.com/bayashi/Plack-App-DummyBox
-version: 0.02
+version: 0.03

@@ -12,6 +12,7 @@ my $builder = Module::Build->new(
         'Plack::Test' => 0,
         'HTTP::Request::Common' => 0,
         'MIME::Base64' => 0,
+        'HTTP::Headers' => 0,
     },
     requires => {
         'perl' => '5.8.1',

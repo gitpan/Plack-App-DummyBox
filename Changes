@@ -1,5 +1,10 @@
 Revision history for Perl extension Plack::App::DummyBox
 
+0.03    Sun Nov 18 20:16:00 JST 2012
+    [NEW FEATURES]
+        - filter option: You can filter the image as Imager object.
+        - cache option:  You can cache responses by specified cache object.
+
 0.02    Sun Nov 11 20:08:00 JST 2012
     [NEW FEATURES]
         - on the image, show the size of image and some text: check `font` option

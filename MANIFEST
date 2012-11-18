@@ -8,6 +8,8 @@ README.pod
 t/00_compile.t
 t/01_basic.t
 t/02_font.t
+t/03_filter.t
+t/04_cache.t
 xt/01_perlcritic.t
 xt/02_pod-coverage.t
 xt/03_pod.t
