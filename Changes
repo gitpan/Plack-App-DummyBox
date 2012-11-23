@@ -1,5 +1,9 @@
 Revision history for Perl extension Plack::App::DummyBox
 
+0.04    Fri Nov 23 10:50:00 JST 2012
+    [NO CODE CHANGE]
+        - fixed tests: skip tests why there are no libraries for Imager::formats
+
 0.03    Sun Nov 18 20:16:00 JST 2012
     [NEW FEATURES]
         - filter option: You can filter the image as Imager object.

@@ -32,7 +32,12 @@ note('app with cache');
         my $res = $cb->(GET '/?w=250&h=50');
 
         is $res->code, 200, 'response status 200';
-        like $res->content, qr/^GIF.+/, 'gif image';
+
+        SKIP: {
+            skip 'gif is not supported', 1 unless $Imager::formats{gif};
+
+            like $res->content, qr/^GIF.+/, 'gif image';
+        }
 
         my $cache_key = $app->cache_key;
         like $cache_key, qr/^250:50:.+/, 'cache key';
@@ -60,7 +65,12 @@ note('app with cache');
             my $res_cached = $cb->(GET '/?w=250&h=50');
 
             is $res_cached->code, 200, 'response status 200 again';
-            like $res_cached->content, qr/^GIF.+/, 'gif image again';
+
+            SKIP: {
+                skip 'gif is not supported', 1 unless $Imager::formats{gif};
+
+                like $res_cached->content, qr/^GIF.+/, 'gif image again';
+            }
 
             is(
                 $res_cached->content,

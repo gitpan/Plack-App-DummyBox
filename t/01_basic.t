@@ -19,6 +19,11 @@ note('methods');
 
 my $app = Plack::App::DummyBox->new->to_app;
 
+for my $type (qw/gif png/) {
+    diag("The Imager module in this system does NOT support: $type")
+        unless $Imager::formats{$type};
+}
+
 note('1x1 images');
 {
     test_psgi $app, sub {
@@ -60,15 +65,34 @@ note('Imager images');
     test_psgi $app, sub {
         my $cb = shift;
 
+        # gif(default)
         my $res = $cb->(GET '/?w=99&h=99');
 
         is $res->code, 200, 'response status 200';
         is $res->content_type, 'image/gif', 'default content_type';
-        is $res->content_length, 296, 'gif image content';
-        like $res->content, qr/^GIF.+/, 'gif image';
 
-        $img->read(data => $res->content);
-        is $img->colorcount, 2, 'color count';
+        SKIP: {
+            skip 'gif is not supported', 3 unless $Imager::formats{gif};
+
+            is $res->content_length, 296, 'gif image content';
+            like $res->content, qr/^GIF.+/, 'gif image';
+
+            $img->read(data => $res->content);
+            is $img->colorcount, 2, 'color count';
+        }
+
+        # png
+        my $res_png = $cb->(GET '/?w=99&h=99&ext=png');
+
+        is $res_png->code, 200, 'response status 200';
+        is $res_png->content_type, 'image/png', 'png content_type';
+
+        SKIP: {
+            skip 'png is not supported', 2 unless $Imager::formats{png};
+
+            is $res_png->content_length, 304, 'png image content';
+            like $res_png->content, qr/^.+PNG.+/, 'png image';
+        }
     };
 }
 

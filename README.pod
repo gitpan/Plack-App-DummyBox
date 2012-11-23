@@ -26,6 +26,11 @@ Then install it:
 
     % make install
 
+=head2 DEPENDENCY
+
+Plack::App::DummyBox requires gif and png libraries for L<Imager> module.
+You should install it before installing Plack::App::DummyBox.
+
 
 =head1 DOCUMENTATION
 

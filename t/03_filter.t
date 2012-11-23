@@ -28,10 +28,15 @@ note('filter option');
 
         is $res->code, 200, 'response status 200';
         is $res->content_type, 'image/gif', 'default content_type';
-        like $res->content, qr/^GIF.+/, 'gif image';
 
-        $img->read(data => $res->content);
-        is $img->colorcount, 4, 'color count';
+        SKIP: {
+            skip 'gif is not supported', 2 unless $Imager::formats{gif};
+
+            like $res->content, qr/^GIF.+/, 'gif image';
+
+            $img->read(data => $res->content);
+            is $img->colorcount, 4, 'color count';
+        }
     };
 }
 
