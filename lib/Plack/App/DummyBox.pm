@@ -22,7 +22,7 @@ use Plack::Util::Accessor qw/
     stderr
 /;
 
-our $VERSION = '0.04';
+our $VERSION = '0.041';
 
 sub prepare_app {
     my $self = shift;
@@ -308,7 +308,7 @@ Dai Okabayashi E<lt>bayashi@cpan.orgE<gt>
 
 =head1 SEE ALSO
 
-L<Plack::Component >, L<Image::Empty>, L<Imager>
+L<Plack::Component>, L<Image::Empty>, L<Imager>
 
 
 =head1 LICENSE

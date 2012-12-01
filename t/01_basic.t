@@ -74,7 +74,7 @@ note('Imager images');
         SKIP: {
             skip 'gif is not supported', 3 unless $Imager::formats{gif};
 
-            is $res->content_length, 296, 'gif image content';
+            ok $res->content_length > 0, 'gif image content';
             like $res->content, qr/^GIF.+/, 'gif image';
 
             $img->read(data => $res->content);
@@ -90,7 +90,7 @@ note('Imager images');
         SKIP: {
             skip 'png is not supported', 2 unless $Imager::formats{png};
 
-            is $res_png->content_length, 304, 'png image content';
+            ok $res_png->content_length > 0, 'png image content';
             like $res_png->content, qr/^.+PNG.+/, 'png image';
         }
     };
